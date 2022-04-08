@@ -1,10 +1,13 @@
 require('dotenv').config();
 const express = require('express');
 const app = express();
+const connect = require('./schemas');
 const cookieParser = require('cookie-parser');
 const cors = require('cors')
 
 app.use(cors());
+
+connect();
 
 const removeHeader = (req, res, next) => { //x-Powerd-By 제거
     res.removeHeader("X-Powered-By");
