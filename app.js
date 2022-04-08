@@ -5,8 +5,6 @@ const connect = require("./schemas");
 const cookieParser = require("cookie-parser");
 const cors = require("cors");
 
-test;
-
 app.use(cors());
 
 connect();
