@@ -1,0 +1,25 @@
+{
+  "name": "goodcode",
+  "version": "1.0.0",
+  "description": "항해99 6기 A 3조 미니 프로젝트",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/hanghae6mini/GOODCODE_BE.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/hanghae6mini/GOODCODE_BE/issues"
+  },
+  "homepage": "https://github.com/hanghae6mini/GOODCODE_BE#readme",
+  "dependencies": {
+    "cookie-parser": "^1.4.6",
+    "cors": "^2.8.5",
+    "dotenv": "^16.0.0",
+    "express": "^4.17.3"
+  }
+}
