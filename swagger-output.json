@@ -106,44 +106,25 @@
         "parameters": [
           {
             "name": "feedType",
+            "description": "(필수)feedType을 입력하세요.",
             "in": "query",
             "type": "string"
           },
           {
             "name": "userId",
+            "description": "userId를 입력하세요.",
             "in": "query",
             "type": "string"
           }
         ],
         "responses": {
           "200": {
-            "description": "정상적인 값을 응답받았을 때, 아래 예제와 같은 형태로 응답받습니다.",
+            "description": "여기는 얼추 설명입니다.",
             "schema": {
               "type": "object",
               "properties": {
-                "feedList": {
-                  "type": "array",
-                  "items": {
-                    "type": "object",
-                    "properties": {
-                      "_id": {
-                        "type": "string",
-                        "example": "62504ef691595a092dee7eae"
-                      },
-                      "feedId": {
-                        "type": "string",
-                        "example": "1"
-                      },
-                      "content": {
-                        "type": "string",
-                        "example": "content1"
-                      },
-                      "image": {
-                        "type": "string",
-                        "example": "test image"
-                      }
-                    }
-                  }
+                "schema": {
+                  "$ref": "#/definitions/Feed"
                 }
               },
               "xml": {
@@ -169,6 +150,97 @@
                 "name": "main"
               }
             }
+          }
+        }
+      },
+      "post": {
+        "tags": [
+          "Feed"
+        ],
+        "summary": "피드 저장",
+        "description": "<p>사용자가 입력한 피드를 저장합니다. <br />이스케이프 문자가 먹습니까?</p>",
+        "parameters": [
+          {
+            "name": "feedType",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "userId": {
+                  "example": "any"
+                },
+                "content": {
+                  "example": "any"
+                },
+                "image": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "put": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "feedId": {
+                  "example": "any"
+                },
+                "content": {
+                  "example": "any"
+                },
+                "image": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
+          }
+        }
+      },
+      "delete": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "feedId": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Created"
+          },
+          "400": {
+            "description": "Bad Request"
           }
         }
       }

@@ -25,9 +25,8 @@ async function selectFeed(req, res){
     #swagger.tags = ['Feed']
     #swagger.summary = '개인 또는 전체피드 조회'
     #swagger.description = '<p>개인피드 또는 전체피드를 조회합니다. <br />이스케이프 문자가 먹습니까?</p>'
-    #swagger.parameters['feedType'] = {
-        in: 'query'
-    }
+    #swagger.parameters['feedType'] = { description: '(필수)feedType을 입력하세요.' }
+    #swagger.parameters['userId'] = { description: 'userId를 입력하세요.' }
     ========================================================================================================*/
     const {feedType, userId} = req.query;
 
@@ -55,14 +54,8 @@ async function selectFeed(req, res){
     /*=====================================================================================
     #swagger.responses[200] = {
         description: '정상적인 값을 응답받았을 때, 아래 예제와 같은 형태로 응답받습니다.',
-        schema: {
-            "feedList": [{
-                "_id": "62504ef691595a092dee7eae",
-                "feedId": "1",
-                "content": "content1",
-                "image": "test image"
-                }]
-        }
+        schema: { schema: { $ref: "#/definitions/Feed" } },
+        description: '여기는 얼추 설명입니다.'
     }
     =====================================================================================*/
     res.status(200).json({result: 'SUCCESS', feedList: feedList});
