@@ -59,7 +59,25 @@ async function login(req, res) {
     res.status(200).send({token, message: '로그인이 완료되었습니다.'});
 }
 
+async function modifyProfile(req, res){
+    // #swagger.tags = ['User']
+    // #swagger.summary = "유저 프로필 수정"
+
+    // TODO userId를 local에서 꺼내오면 변경
+    const {infoType, data, userId} = req.body;
+
+    if (infoType === 'introduce' || infoType === 'location' || infoType === 'email' || infoType === 'url') {
+        console.log('안', userId, infoType, data);
+        await User.updateOne({userId}, {$set: {infoType: data}});
+    } else {
+        return res.status(400).json({result: 'FAIL', message: '정보 수정이 실패했습니다.'});
+    }
+
+    res.status(201).json({result: 'SUCCESS', message: '정보 수정이 완료되었습니다.'});
+}
+
 module.exports = {
     signUp,
     login,
+    modifyProfile,
 };

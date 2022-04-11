@@ -5,4 +5,6 @@ router.post('/signup', userController.signUp);
 
 router.post('/login', userController.login);
 
+router.patch('/', userController.modifyProfile);
+
 module.exports = router;
