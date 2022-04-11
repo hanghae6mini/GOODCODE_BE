@@ -56,7 +56,7 @@ async function login(req, res) {
             issuer: 'GOODCODE'
         });
 
-    res.send({token});
+    res.status(200).send({token, message: '로그인이 완료되었습니다.'});
 }
 
 module.exports = {
