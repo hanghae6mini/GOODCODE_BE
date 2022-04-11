@@ -67,9 +67,14 @@ async function modifyProfile(req, res){
     // TODO userId를 local에서 꺼내오면 변경
     const {infoType, data, userId} = req.body;
 
-    if (infoType === 'introduce' || infoType === 'location' || infoType === 'email' || infoType === 'url') {
-        console.log('안', userId, infoType, data);
-        await User.updateOne({userId}, {$set: {infoType: data}});
+    if (infoType === 'introduce') {
+        await User.updateOne({userId}, {$set: {introduce: data}});
+    } else if (infoType === 'location') {
+        await User.updateOne({userId}, {$set: {location: data}});
+    } else if (infoType === 'email') {
+        await User.updateOne({userId}, {$set: {email: data}});
+    } else if (infoType === 'url') {
+        await User.updateOne({userId}, {$set: {url: data}});
     } else {
         return res.status(400).json({result: 'FAIL', message: '정보 수정이 실패했습니다.'});
     }
