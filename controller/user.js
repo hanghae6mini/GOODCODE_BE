@@ -59,7 +59,7 @@ async function login(req, res) {
     }
   );
 
-  res.send({ token });
+  res.status(200).send({token, message: '로그인이 완료되었습니다.'});
 }
 
 async function authUser(req, res) {
@@ -72,10 +72,64 @@ async function authUser(req, res) {
   } catch (err) {
     res.status(400).json({ result: "FAIL", message: "유저를 확인할 수 없습니다." });
   }
+
 }
+
+async function modifyProfile(req, res){
+    // #swagger.tags = ['User']
+    // #swagger.summary = "유저 프로필 수정"
+
+    // TODO userId를 local에서 꺼내오면 변경
+    const {infoType, data, userId} = req.body;
+
+    if (infoType === 'introduce') {
+        await User.updateOne({userId}, {$set: {introduce: data}});
+    } else if (infoType === 'location') {
+        await User.updateOne({userId}, {$set: {location: data}});
+    } else if (infoType === 'email') {
+        await User.updateOne({userId}, {$set: {email: data}});
+    } else if (infoType === 'url') {
+        await User.updateOne({userId}, {$set: {url: data}});
+    } else {
+        return res.status(400).json({result: 'FAIL', message: '정보 수정이 실패했습니다.'});
+    }
+
+    res.status(201).json({result: 'SUCCESS', message: '정보 수정이 완료되었습니다.'});
+}
+
+async function getUser(req, res) {
+    // #swagger.tags = ['User']
+    // #swagger.summary = "유저 프로필 조회"
+
+    // TODO userId를 local에서 꺼내오면 변경
+    const userId = 'tes1t'
+
+    const user  = await User.findOne({userId});
+    console.log(user)
+    res.status(200).json({
+        user: {
+            nickname: user.nickname,
+            introduce: user.introduce,
+            location: user.location,
+            email: user.email,
+            url: user.url,
+        },
+        result: 'SUCCESS',
+        message: '정보 수정이 완료되었습니다.'});
+}
+
+/*
+nickname:
+introduce:
+location:
+email:
+url:
+ */
 
 module.exports = {
   signUp,
   login,
   authUser,
+  modifyProfile,
+  getUser
 };
