@@ -1,5 +1,4 @@
 const Joi = require('Joi');
-const Sanitizehtml = require('sanitize-html');
 
 module.exports = async (req, res, next) => {
 
@@ -8,7 +7,7 @@ module.exports = async (req, res, next) => {
         userId: Joi.when('feedType', {
             is: 'user',
             then: Joi.string().required().error(new Error('Server Error - 요청 필수 값인 userId가 존재하지 않습니다.\n관리자에게 문의하세요.'))
-        }),
+        })
     });
 
     try{
