@@ -3,6 +3,8 @@ const User = require("../schemas/user");
 
 module.exports = async (req, res, next) => {
   const { authorization } = req.headers;
+  if (!authorization) return res.status(401).json({ Message: "authorization 입력해주세요!" });
+
   const [tokenType, tokenValue] = authorization.split(" ");
 
   if (tokenType !== "Bearer") {
