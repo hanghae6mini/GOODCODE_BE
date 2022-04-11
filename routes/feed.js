@@ -8,9 +8,9 @@ const deleteFeedMiddleware = require("../middlewares/deleteFeed-middleware");
 
 router
   .route("/")
-  .get(authMiddle, selectFeedMiddleware, feedController.selectFeed)
-  .post(authMiddle, insertFeedMiddleware, feedController.insertFeed)
-  .put(authMiddle, updateFeedMiddleware, feedController.updateFeed)
-  .delete(authMiddle, deleteFeedMiddleware, feedController.deleteFeed);
+  .get(selectFeedMiddleware, feedController.selectFeed)
+  .post(insertFeedMiddleware, feedController.insertFeed)
+  .put(updateFeedMiddleware, feedController.updateFeed)
+  .delete(deleteFeedMiddleware, feedController.deleteFeed);
 
 module.exports = router;
