@@ -12,9 +12,9 @@ module.exports = async (req, res, next) => {
     return;
   }
   try {
-    const { userInfo } = jwt.verify(tokenValue, process.env.SECRET_KEY);
+    const { userId } = jwt.verify(tokenValue, process.env.SECRET_KEY);
 
-    const user = await User.findOne({ userId: userInfo.userId });
+    const user = await User.findOne({ userId });
 
     if (!user) return Storage.removeItem("token");
 
