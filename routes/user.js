@@ -6,9 +6,9 @@ router.post("/signup", userController.signUp);
 
 router.post("/login", userController.login);
 
-router.put('/', userController.modifyProfile);
+router.put('/', authMiddleware, userController.modifyProfile);
 
-router.get('/', userController.getUser);
+router.get('/', authMiddleware, userController.getUser);
 
 router.get("/auth", authMiddleware, userController.authUser);
 
