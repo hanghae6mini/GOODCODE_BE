@@ -1,11 +1,7 @@
 const mongoose = require('mongoose');
+const autoIdSetter = require('./auto-id-setter');
 
 const schema = new mongoose.Schema({
-    feedId : {
-        type: String,
-        required: true,
-        unique: true,
-    },
     userId : {
         type: String,
         required: true,
@@ -24,5 +20,5 @@ const schema = new mongoose.Schema({
         type: String,
     },
 });
-
+autoIdSetter(schema, mongoose, 'schema', 'feedId');
 module.exports = mongoose.model('Feed', schema);
