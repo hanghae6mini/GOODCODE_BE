@@ -79,8 +79,9 @@ async function modifyProfile(req, res){
     // #swagger.tags = ['User']
     // #swagger.summary = "유저 프로필 수정"
 
-    // TODO userId를 local에서 꺼내오면 변경
-    const {infoType, data, userId} = req.body;
+    const {userId} = res.locals.user;
+
+    const {infoType, data} = req.body;
 
     if (infoType === 'introduce') {
         await User.updateOne({userId}, {$set: {introduce: data}});
@@ -101,11 +102,10 @@ async function getUser(req, res) {
     // #swagger.tags = ['User']
     // #swagger.summary = "유저 프로필 조회"
 
-    // TODO userId를 local에서 꺼내오면 변경
-    const userId = 'tes1t'
+    const {userId} = res.locals.user;
 
     const user  = await User.findOne({userId});
-    console.log(user)
+
     res.status(200).json({
         user: {
             nickname: user.nickname,
