@@ -1,6 +1,7 @@
 const User = require('../schemas/user');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
+const FeedComment = require("../schemas/feedcomment");
 
 async function signUp(req, res) {
     // #swagger.tags = ['User']
@@ -76,8 +77,38 @@ async function modifyProfile(req, res){
     res.status(201).json({result: 'SUCCESS', message: '정보 수정이 완료되었습니다.'});
 }
 
+async function getUser(req, res) {
+    // #swagger.tags = ['User']
+    // #swagger.summary = "유저 프로필 조회"
+
+    // TODO userId를 local에서 꺼내오면 변경
+    const userId = 'tes1t'
+
+    const user  = await User.findOne({userId});
+    console.log(user)
+    res.status(200).json({
+        user: {
+            nickname: user.nickname,
+            introduce: user.introduce,
+            location: user.location,
+            email: user.email,
+            url: user.url,
+        },
+        result: 'SUCCESS',
+        message: '정보 수정이 완료되었습니다.'});
+}
+
+/*
+nickname:
+introduce:
+location:
+email:
+url:
+ */
+
 module.exports = {
     signUp,
     login,
     modifyProfile,
+    getUser
 };
