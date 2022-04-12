@@ -1,5 +1,9 @@
 const Feed = require('../schemas/feed');
 const User = require('../schemas/user');
+
+const multer = require('multer');
+const upload = multer({ dest: 'uploads/', limiuts: { fileSize: 10 * 1024 * 1024 } });
+
 const moment = require("moment");
 
 /**
@@ -88,7 +92,15 @@ async function insertFeed(req, res){
     // if(user === null) return res.status(400).json({ result: 'FAIL', message: 'User 정보가 존재하지 않습니다.' });
 
     //등록된 피드가 추후 수정된다면, modDate document가 존재해야 하기때문에 빈 문자열을 삽입한다.
-    await Feed.create({ userId, content, image, regDate, modDate: '' });
+
+    console.log('/image/' + req.file.filename);
+    await Feed.create({
+        userId,
+        content,
+        image: '/image/' + req.file.filename,
+        regDate,
+        modDate: ''
+    });
     res.status(201).json({result: 'SUCCESS', message: '피드생성완료.'});
 }
 
