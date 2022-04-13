@@ -22,8 +22,8 @@ const deleteFeedMiddleware = require("../middlewares/deleteFeed-middleware");
 
 router.route("/")
   .get(authMiddle, selectFeedMiddleware, feedController.selectFeed)
-  .post(upload.single('image'), authMiddle, insertFeedMiddleware, feedController.insertFeed)
-  .put(authMiddle, updateFeedMiddleware, feedController.updateFeed)
+  .post(authMiddle, upload.single('image'), insertFeedMiddleware, feedController.insertFeed)
+  .put(authMiddle, upload.single('image'), updateFeedMiddleware, feedController.updateFeed)
   .delete(authMiddle, deleteFeedMiddleware, feedController.deleteFeed);
 
 module.exports = router;
