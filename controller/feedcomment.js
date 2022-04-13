@@ -1,11 +1,14 @@
 const FeedComment = require("../schemas/feedcomment");
 const moment = require("moment");
+require("moment-timezone");
+moment.tz.setDefault("Asia/Seoul");
 
 async function showComments(req, res) {
   // #swagger.description = "여기는 피드댓글을 보여주는 곳 입니다."
   // #swagger.tags = ["FeedComment"]
   // #swagger.summary = "피드댓글 조회"
-  const { feedId } = req.body;
+  const { feedId } = req.query;
+  console.log(feedId);
   const comments = await FeedComment.find({ feedId }).sort({ commentId: -1 });
   try {
     res.status(200).json({
@@ -33,12 +36,14 @@ async function writeComment(req, res) {
   // #swagger.tags = ["FeedComment"]
   // #swagger.summary = "피드댓글 생성"
   try {
-    const { userId, feedId, comment, nickname } = req.body;
+    const { user } = res.locals;
+    const { feedId } = req.query;
+    const { comment } = req.body;
     const regDate = moment().format("YYYY-MM-DD HH:mm:ss");
     if (!comment) return res.status(400).json({ result: "FAIL", message: "댓글을 입력해주세요." });
     FeedComment.create({
-      userId,
-      nickname,
+      userId: user.userId,
+      nickname: user.nickname,
       feedId,
       comment,
       regDate,
@@ -54,7 +59,8 @@ async function updateComment(req, res) {
   // #swagger.tags = ["FeedComment"]
   // #swagger.summary = "피드댓글 수정"
   try {
-    const { commentId, comment } = req.body;
+    const { comment } = req.body;
+    const { commentId } = req.query;
     const modDate = moment().format("YYYY-MM-DD HH:mm:ss");
     const checkcomment = await FeedComment.findOne({ commentId });
 
@@ -73,7 +79,7 @@ async function deleteComment(req, res) {
   // #swagger.tags = ["FeedComment"]
   // #swagger.summary = "피드댓글 삭제"
   try {
-    const { commentId } = req.body;
+    const { commentId } = req.query;
     const checkcomment = await FeedComment.findOne({ commentId });
     if (!checkcomment) return res.status(400).json({ result: "FAIL", message: "해당 댓글이 없습니다." });
 
