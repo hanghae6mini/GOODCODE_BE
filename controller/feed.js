@@ -20,8 +20,8 @@ const moment = require("moment");
  *          - Feed 컬렉션 내 모든 데이터 조회 후 해당 데이터 response.
  *      3-3. 정의되지 않은 feedType인 경우
  *          - FAIL 처리
- * 
- * FIXME: 
+ *
+ * FIXME:
  *  1. sanitize-html을 helmet으로 바꿔서 적용해보자. 보안관련이슈가 작용할 것으로 보인다.
  */
 async function selectFeed(req, res){
@@ -71,8 +71,8 @@ async function selectFeed(req, res){
  *  1. 입력받은 Feed Data 체크
  *      1-1. 필수입력값 userId, content 체크
  *  2. regDate는 서버 내 생성 (YYYY-MM-DD HH:mm:ss 형식)
- * 
- * FIXME: 
+ *
+ * FIXME:
  *  1. XSS 방어코드 기재필요.
  */
 async function insertFeed(req, res){
@@ -92,26 +92,37 @@ async function insertFeed(req, res){
     // if(user === null) return res.status(400).json({ result: 'FAIL', message: 'User 정보가 존재하지 않습니다.' });
 
     //등록된 피드가 추후 수정된다면, modDate document가 존재해야 하기때문에 빈 문자열을 삽입한다.
-    await Feed.create({
-        userId,
-        content,
-        image: '/image/' + req.file.filename,
-        regDate,
-        modDate: ''
-    });
+    if (!req.file) {
+        await Feed.create({
+            userId,
+            content,
+            image: '',
+            regDate,
+            modDate: ''
+        });
+    } else {
+        await Feed.create({
+            userId,
+            content,
+            image: '/image/' + req.file.filename,
+            regDate,
+            modDate: ''
+        });
+
+    }
     res.status(201).json({result: 'SUCCESS', message: '피드생성완료.'});
 }
 
 /**
  * 2022. 04. 11. HSYOO.
- * 
+ *
  * TODO:
  *  1. 필수입력값 feedId 존재여부 체크.
  *  2. 수정할 피드가 존재하는지 체크.
  *      2-1. 존재하지 않는다면, 400 에러 return
  *  3. 요청받은 feedId 수정처리.
- * 
- * FIXME: 
+ *
+ * FIXME:
  *  1. XSS 방어코드 기재필요.
  */
 async function updateFeed(req, res){
@@ -122,7 +133,11 @@ async function updateFeed(req, res){
     const feed = await Feed.findOne({feedId: feedId});
     if(feed === null) return res.status(400).json({ result: 'FAIL', message: '수정할 Feed 정보가 존재하지 않습니다.' });
 
-    await Feed.updateOne({ feedId: feedId }, { $set: { content: content, image: '/image/' + req.file.filename, modDate: modDate } });
+    if (!req.file) {
+        await Feed.updateOne({ feedId: feedId }, { $set: { content: content, image: '', modDate: modDate } });
+    } else {
+        await Feed.updateOne({ feedId: feedId }, { $set: { content: content, image: '/image/' + req.file.filename, modDate: modDate } });
+    }
     res.status(201).json({ result: 'SUCCESS', message: '피드수정완료.' });
 }
 
@@ -133,8 +148,8 @@ async function updateFeed(req, res){
  *  2. 삭제할 피드가 존재하는지 체크.
  *      2-1. 존재하지 않는다면, 400 에러 return
  *  3. 요청받은 feedId 삭제처리.
- * 
- * FIXME: 
+ *
+ * FIXME:
  *  1. XSS 방어코드 기재필요.
  */
  async function deleteFeed(req, res){
