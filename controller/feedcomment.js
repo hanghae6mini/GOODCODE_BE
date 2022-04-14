@@ -8,7 +8,6 @@ async function showComments(req, res) {
   // #swagger.tags = ["FeedComment"]
   // #swagger.summary = "피드댓글 조회"
   const { feedId } = req.query;
-  console.log(feedId);
   const comments = await FeedComment.find({ feedId }).sort({ commentId: -1 });
   try {
     res.status(200).json({
@@ -59,11 +58,12 @@ async function updateComment(req, res) {
   // #swagger.tags = ["FeedComment"]
   // #swagger.summary = "피드댓글 수정"
   try {
+    const { user } = res.locals;
     const { comment } = req.body;
     const { commentId } = req.query;
     const modDate = moment().format("YYYY-MM-DD HH:mm:ss");
     const checkcomment = await FeedComment.findOne({ commentId });
-
+    if (user.nickname !== checkcomment.nickname) return res.status(400).json({ result: "FAIL", message: "수정 권한이 없습니다." });
     if (!checkcomment) return res.status(400).json({ result: "FAIL", message: "해당 댓글이 없습니다." });
     if (!comment) return res.status(400).json({ result: "FAIL", message: "수정할 내용을 입력해 주세요" });
 
@@ -79,8 +79,10 @@ async function deleteComment(req, res) {
   // #swagger.tags = ["FeedComment"]
   // #swagger.summary = "피드댓글 삭제"
   try {
+    const { user } = res.locals;
     const { commentId } = req.query;
     const checkcomment = await FeedComment.findOne({ commentId });
+    if (user.nickname !== checkcomment.nickname) return res.status(400).json({ result: "FAIL", message: "삭제 권한이 없습니다." });
     if (!checkcomment) return res.status(400).json({ result: "FAIL", message: "해당 댓글이 없습니다." });
 
     await FeedComment.deleteOne({ commentId });
