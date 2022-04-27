@@ -95,7 +95,6 @@ async function authUser(req, res) {
     } catch (err) {
         res.status(400).json({result: "FAIL", message: "유저를 확인할 수 없습니다."});
     }
-
 }
 
 async function modifyProfile(req, res) {
